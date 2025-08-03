@@ -1,0 +1,35 @@
+services:
+  mysql:
+    image: mysql:8
+    restart: always
+    env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  flask:
+    build: .
+    restart: always
+    env_file: .env
+    ports:
+      - "${FLASK_RUN_PORT}:${FLASK_RUN_PORT}"
+    depends_on:
+      - mysql
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      FLASK_APP: ${FLASK_APP}
+      FLASK_ENV: ${FLASK_ENV}
+      FLASK_RUN_HOST: ${FLASK_RUN_HOST}
+      FLASK_RUN_PORT: ${FLASK_RUN_PORT}
+    command: flask run --host=${FLASK_RUN_HOST} --port=${FLASK_RUN_PORT}
+
+volumes:
+  mysql_data:
