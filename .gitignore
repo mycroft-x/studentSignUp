@@ -1,0 +1,14 @@
+# Ignore all environment files by default
+.env
+
+# Ignore virtual environment
+.venv/
+
+# Ignore temporary version files
+.history/
+
+# Ignore bytecode-compiled files
+__pycache__/
+
+# Ignore Desktop Services Store files
+.DS_Store
